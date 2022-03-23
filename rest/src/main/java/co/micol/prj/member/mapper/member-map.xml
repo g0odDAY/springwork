@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.prj.member.mapper.MemberMapper">
+	<resultMap type="co.micol.prj.member.service.MemberVO" id="memberResultMap">
+		<id property="memberId" column="id"/>
+		<result property="memberPw" column="password"/>
+		<result property="memberName" column="name"/>
+		<result property="memberTel" column="tel"/>
+		<result property="memberAddress" column="address"/>
+		<result property="memberAuthor" column="author"/>
+		
+	</resultMap>
+
+	<select id="memberList" resultMap="memberResultMap">
+		SELECT * FROM MEMBER ORDER BY ID DESC
+	</select>
+	<select id="memberSelect" resultMap="memberResultMap">
+		SELECT * FROM MEMBER WHERE ID = #{memberId}
+	</select>
+	<insert id="memberInsert" parameterType="MemberVO">
+	  	INSERT INTO MEMBER(ID,PASSWORD,NAME,TEL,ADDRESS,AUTHOR)
+	  	VALUES(#{memberId},
+	  			#{memberPw},
+	  			#{memberName},
+	  			#{memberTel},
+	  			#{memberAddress},
+	  			'USER')
+	</insert>
+	<delete id="memberDelete">
+		DELETE FROM MEMBER WHERE ID=#{memberId}
+	</delete>
+	<update id="memberUpdate" parameterType="MemberVO">
+		UPDATE MEMBER 
+		<set>
+			<if test="memberId != null and memberId !=''"> ID=#{memberId},</if>
+			<if test="memberPw != null"> PASSWORD=#{memberPw},</if>
+			<if test="memberName != null"> NAME=#{memberName},</if>
+			<if test="memberTel != null"> TEL=#{memberTel},</if>
+			<if test="memberAddress != null"> ADDRESS =#{memberAddress},</if>
+		</set>
+		WHERE ID = #{memberId}
+	</update>
+</mapper>
